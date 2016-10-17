@@ -1,0 +1,24 @@
+{# INPUTS
+    picui
+    page.header
+#}
+
+{%
+	import 'partials/raspy/samplelogger.html.twig' as lg
+%}
+{%
+	import 'partials/raspy/energymeter.html.twig' as em
+%}
+
+{% set logs = uiadd(picui, 'logs', 'array') %}
+
+{% for cap in ['Spannung', 'Strom', 'Leistung'] %}
+	<div class="panel panel-default">
+			<div class="panel-heading panel-heading-big">{{- cap -}}</div>
+		<div class="panel-body">
+            {{- lg.render(uipush(logs, 'object')) -}}
+		</div>
+	</div>
+{% endfor %}
+
+{{- em.render(uiadd(picui, 'energy', 'object')) -}}

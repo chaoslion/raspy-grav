@@ -1,0 +1,210 @@
+{# INPUTS
+    picui
+    page.header
+#}
+
+{% macro render_device(uiobj) %}
+
+    {%
+        import 'partials/raspy/samplelogger.html.twig' as lg
+    %}
+
+    {# status #}
+    <ul class="list-group">
+        <li class="list-group-item">
+            Online
+            <span id="{{- uiadd(uiobj, 'state', 'item').id() }}"></span>
+        </li>
+        <li class="list-group-item">
+            Zeit
+            <span id="{{- uiadd(uiobj, 'time', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            MAC
+            <span id="{{- uiadd(uiobj, 'mac', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Interface
+            <span id="{{- uiadd(uiobj, 'interface', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Hostname
+            <span id="{{- uiadd(uiobj, 'hostname', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            IP
+            <span id="{{- uiadd(uiobj, 'ip', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Lease-Zeit
+            <span id="{{- uiadd(uiobj, 'lease', 'item').id() -}}" class="badge">-</span>
+        </li>
+    </ul>
+
+    {# graph to display online/offline state #}
+    {{- lg.render(uiadd(uiobj, 'log', 'object')) -}}
+{% endmacro %}
+
+{% macro render_devices(container, devices) %}
+
+    {% import _self as me %}
+
+
+    {% set devtabs = uiadd(container, 'devtabs', 'bstab') %}
+    {% for dev in devices %}
+        {% set logo = 'fa-question' %}
+        {% if dev.type == 1 %}
+            {% set logo = 'fa-mobile' %}
+        {% elseif dev.type == 2 %}
+            {% set logo = 'fa-tablet' %}
+        {% elseif dev.type == 4 %}
+            {% set logo = 'fa-laptop' %}
+        {% elseif dev.type == 8 %}
+            {% set logo = 'fa-desktop' %}
+        {% endif %}
+
+        {% set nicename =  '<span class="fa fa-fw ' ~ logo ~ '"></span>&nbsp;' ~ dev.owner|title %}
+        {% do devtabs.add_panel(nicename) %}
+    {% endfor %}
+
+    {{- devtabs.begin_html() -}}
+    {% for content in devtabs.get_contents() %}
+        {{- content.begin_html(loop.first) -}}
+        {{- me.render_device(content) -}}
+        {{- content.end_html() -}}
+    {% endfor %}
+    {{- devtabs.end_html() -}}
+
+{% endmacro %}
+
+
+{% import 'partials/raspy/samplelogger.html.twig' as lg %}
+{% import _self as me %}
+
+
+{# router #}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Router</div>
+
+    {% set router = uiadd(picui, 'router', 'object')  %}
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            Modell
+            <span id="{{- uiadd(router, 'model', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Lokalzeit
+            <span id="{{- uiadd(router, 'localtime', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Uptime
+            <span id="{{- uiadd(router, 'uptime', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Software
+            <span id="{{- uiadd(router, 'software', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Update verfügbar
+            <span id="{{- uiadd(router, 'upgrade', 'item').id() -}}" class="badge">-</span>
+        </li>
+    </ul>
+</div>
+
+
+{# dsl #}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">DSL</div>
+    <div class="panel-body">
+
+        {% set dslrx = uiadd(picui, 'dslrx', 'object') %}
+        {% set dsltx = uiadd(picui, 'dsltx', 'object') %}
+
+
+        <div class="list-group">
+
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="fa fa-download fa-fw"></span>&nbsp;Download
+                </h5>
+
+                <div class="list-group-item-text">
+                    <ul class="list-space5">
+                        <li>
+                            Bytes
+                            <span id="{{- uiadd(dslrx, 'bytes', 'item').id() -}}" class="pull-right badge">-</span>
+                        </li>
+                        <li>
+                            max. Rate
+                            <span id="{{- uiadd(dslrx, 'ratemax', 'item').id() -}}" class="pull-right badge">-</span>
+                        </li>
+
+                        <li>
+                            theoretische max. Rate
+                            <span id="{{- uiadd(dslrx, 'ratelimit', 'item').id() -}}" class="pull-right badge">-</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="fa fa-upload fa-fw"></span>&nbsp;Upload
+                </h5>
+
+                <div class="list-group-item-text">
+                    <ul class="list-space5">
+                        <li>
+                            Bytes
+                            <span id="{{- uiadd(dsltx, 'bytes', 'item').id() -}}" class="pull-right badge">-</span>
+                        </li>
+                        <li>
+                            max. Rate
+                            <span id="{{- uiadd(dsltx, 'ratemax', 'item').id() -}}" class="pull-right badge">-</span>
+                        </li>
+
+                        <li>
+                            theoretische max. Rate
+                            <span id="{{- uiadd(dsltx, 'ratelimit', 'item').id() -}}" class="pull-right badge">-</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading panel-heading-big">Download</div>
+            <div class="panel-body">
+                {{- lg.render(uiadd(dslrx, 'log', 'object')) -}}
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading panel-heading-big">Upload</div>
+            <div class="panel-body">
+                {{- lg.render(uiadd(dsltx, 'log', 'object')) -}}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+{# devices #}
+{% if picui.authorized %}
+    <div class="panel panel-default">
+        <div class="panel-heading panel-heading-big">Netzwerkgeräte</div>
+        <div class="panel-body">
+            {{-
+                me.render_devices(
+                    picui,
+                    picui.taskdata.devices
+                )
+            -}}
+        </div>
+    </div>
+
+{% endif %}

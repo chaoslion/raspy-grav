@@ -1,0 +1,100 @@
+{# INPUTS
+    picui
+    page.header
+#}
+
+{% block js_bodytags %}
+    {% set gmaps = 'https://maps.googleapis.com/maps/api/js?' %}
+    {% set gmapskey = 'key=AIzaSyC_O819YDpj2rRDnHC_fxMFHXSVzJOFPdI' %}
+    {% set gmapslibs = '&libraries=geometry' %}
+    <script src="{{- gmaps ~ gmapskey ~ gmapslibs }}"></script>
+{% endblock %}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Info</div>
+    <div class="panel-body">
+        <ul class="list-group">
+            <li class="list-group-item">
+                Updates
+                <span id="{{- uiadd(picui, 'updates', 'item').id() -}}" class="badge">-</span>
+            </li>
+            <li class="list-group-item">
+                Letztes Update
+                <span id="{{- uiadd(picui, 'synctime', 'item').id() -}}" class="badge">-</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+{% set directions = uiadd(picui, 'directions', 'array') %}
+{% set dirs = picui.taskdata.directions %}
+{% if not picui.authorized %}
+    {% set dirs = picui.taskdata.directions|slice(0, 1)%}
+{% endif %}
+{% for dir in dirs %}
+
+    {% set dirui = uipush(directions, 'object') %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading panel-heading-big">Route{{- loop.index0 -}}</div>
+        <div class="panel-body">
+
+            {# driving #}
+            {% if (dir.mode b-and 1) > 0 %}
+            <div class="panel panel-default">
+                <div class="panel-heading">Auto</div>
+                <div class="panel-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-1">Details</th>
+                                    <th class="col-md-4">Fahrtzeit</th>
+                                    <th class="col-md-4">Fahrtzeit mit Verkehr</th>
+                                    <th class="col-md-3">Entfernung</th>
+                                </tr>
+                            </thead>
+                            <tbody id="{{- uiadd(dirui, 'tdriving', 'item').id() }}">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="{{- uiadd(dirui, 'driving_map', 'item').id() -}}" class="traffic-map"></div>
+                </div>
+            </div>
+            {% endif %}
+
+            {# transit #}
+            {% if (dir.mode b-and 2) > 0 %}
+            <div class="panel panel-default">
+                <div class="panel-heading">Bahn</div>
+                <div class="panel-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-1">Details</th>
+                                    <th class="col-md-3">Abfahrtszeit</th>
+                                    <th class="col-md-3">Ankunftszeit</th>
+                                    <th class="col-md-3">Fahrtzeit</th>
+                                    <th class="col-md-2">Entfernung</th>
+                                </tr>
+                            </thead>
+                            <tbody id="{{- uiadd(dirui, 'ttransit', 'item').id() }}">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endfor %}
+
+<a class="pull-right" href="https://maps.google.de/">Powered by Google Maps</a>

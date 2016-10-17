@@ -1,4 +1,4 @@
 *html.twig
 partials/*.html.twig
-!picontrol.html.twig
-!partials/picontrol/*.html.twig
+!raspy.html.twig
+!partials/raspy/*.html.twig

@@ -1,0 +1,91 @@
+{% extends 'partials/base.html.twig' %}
+
+{%
+    import 'partials/raspy/samplelogger.html.twig' as lg
+%}
+
+{% do assets.addJs('theme://js/min/raspy.js', {group: 'user'}) %}
+{% do assets.addJs('theme://js/min/raspy_tasks.js', {group: 'user'}) %}
+
+{% set taskname = page.header.task %}
+{% set picui = raspyui(taskname) %}
+{% set statusbox = uiadd(picui, 'statusbox', 'object') %}
+{% set dashboard = uiadd(picui, 'dashboard', 'item') %}
+
+
+
+{% block js_bodytags %}
+    {# debug only #}
+{#
+    <script src="{{- url('theme://js/src/raspy/lib/raspy.js') }}"></script>
+    <script src="{{- url('theme://js/src/raspy/lib/energymeter.js') }}"></script>
+    <script src="{{- url('theme://js/src/raspy/lib/samplelogger.js') }}"></script>
+    <script src="{{- url('theme://js/src/raspy/' ~ taskname ~ '.js') }}"></script>
+     #}
+{#
+
+    <script src="{{- url('theme://js/min/raspy.js') }}"></script>
+    <script src="{{- url('theme://js/min/raspy_tasks.js') }}"></script>
+
+  #}{% endblock %}
+
+{% block js_readycode %}
+    raspy.init({{ picui.makejs() }})
+{% endblock %}
+
+{% block content %}
+
+
+
+<div id="{{- uiadd(statusbox, 'container', 'item').id() -}}" class="alert alert-info" role="alert">
+
+    {% set icon = uiadd(statusbox, 'icon', 'item') %}
+    {% set status = uiadd(statusbox, 'status', 'item') %}
+
+
+    <h4>
+        <span id="{{- icon.id() -}}" class="fa fa-spinner fa-spin fa-fw"></span>&nbsp;<span id="{{- status.id() }}">Bitte warten...</span>
+    </h4>
+
+    <div id="{{- uiadd(statusbox, 'loaded', 'item').id() -}}" class="hidden">
+
+        {% set morestats = uiadd(statusbox, 'morestats', 'object') %}
+        {% set more_stats_collapse = uiadd(morestats, 'collapse', 'item') %}
+
+        <ul>
+            <li>
+                Updates: <span id="{{- uiadd(statusbox, 'updates', 'item').id() }}"></span>
+            </li>
+            <li>
+                Laufzeit: <span id="{{- uiadd(statusbox, 'runtime', 'item').id() }}"></span>
+            </li>
+            <li>
+                Taskzeit: <span id="{{- uiadd(statusbox, 'tasktime', 'item').id() }}"></span>
+            </li>
+        </ul>
+
+	    <button id="{{- uiadd(statusbox, 'update', 'item').id() -}}" class="btn btn-primary" type="button">aktualisieren</button>
+
+	    <button id="{{- uiadd(statusbox, 'more', 'item').id() -}}" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{- more_stats_collapse.id() -}}" aria-expanded="false" aria-controls="{{- more_stats_collapse.id() }}">-</button>
+
+        <p></p>
+
+        <div class="collapse" id="{{- more_stats_collapse.id() }}">
+            {{- lg.render(uiadd(morestats, 'runtimelog', 'object')) -}}
+        </div>
+   </div>
+</div>
+
+<div id="{{- dashboard.id() -}}" class="hidden">
+    {%
+        include 'partials/raspy/' ~ taskname ~ '.html.twig'
+    %}
+</div>
+
+{# content #}
+{# {% if page.content %}
+    <hr>
+    {{- page.content -}}
+{% endif %} #}
+
+{% endblock %}

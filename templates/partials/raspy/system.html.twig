@@ -1,0 +1,323 @@
+{# INPUTS
+    picui
+    page.header
+#}
+
+{% macro render_memory(uiarray, items) %}
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="col-md-3">Status</th>
+                <th class="col-md-1">Gesamt</th>
+                <th class="col-md-8">Verwendung</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    {% set mem = uipush(uiarray, 'object') %}
+                    <tr>
+                        <td>{{- item -}}</td>
+                        <td>
+                            <span id="{{- uiadd(mem, 'size', 'item').id()-}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <div class="progress">
+                                <div
+                                    id="{{- uiadd(mem, 'usage', 'item').id() -}}"
+                                    class="progress-bar progress-bar-warning"
+                                    role="progressbar"
+                                    aria-valuenow="0"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                    style="width: 0%">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}
+
+{% import _self as me %}
+{%
+    import 'partials/raspy/samplelogger.html.twig' as lg
+%}
+
+
+
+{# pic process info #}
+{% set process = uiadd(picui, 'process', 'object') %}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">RasPy Status</div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="col-md-2">Speicherauslastung</th>
+                    <th class="col-md-2">CPU-Auslastung</th>
+                    <th class="col-md-2">Schreibzugriffe</th>
+                    <th class="col-md-2">Schreibgröße</th>
+                    <th class="col-md-2">Lesezugriffe</th>
+                    <th class="col-md-2">Lesegröße</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span id="{{- uiadd(process, 'mem', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(process, 'usage', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(process, 'wcount', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(process, 'wbytes', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(process, 'rcount', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(process, 'rbytes', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{# fan stats #}
+{% set fan = uiadd(picui, 'fan', 'object') %}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Lüfter</div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            ECO-Modus
+            <span id="{{- uiadd(fan, 'ecomode', 'item').id() -}}" class="pull-right fa fa-lg fa-leaf"></span>
+        </li>
+        <li class="list-group-item">
+            min. Geschwindigkeit
+            <span id="{{- uiadd(fan, 'minspeed', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Stromaufnahme
+            <span id="{{- uiadd(fan, 'maxload', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Kalibrierung
+            <span id="{{- uiadd(fan, 'cal_time', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Profil
+            <ul id="{{- uiadd(fan, 'profiles', 'item').id() -}}" class="pull-right list-inline"></ul>
+        </li>
+    </ul>
+</div>
+
+
+{# processor stats #}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Prozessor</div>
+    <div class="panel-body">
+
+        {% set processor = uiadd(picui, 'processor', 'array') %}
+
+        {% for cap in ['Temperatur', 'Lüfter', 'Auslastung'] %}
+            <div class="panel panel-default">
+                <div class="panel-heading panel-heading-big">{{- cap -}}</div>
+                <div class="panel-body">
+                    {{- lg.render( uipush(processor, 'object') ) -}}
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+{# cpu info #}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">CPUs</div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="col-sm-2">Name</th>
+                    <th class="col-sm-2">Frequenz</th>
+                    <th class="col-sm-2">Auslastung</th>
+                    <th class="col-sm-6">Model</th>
+                </tr>
+                </thead>
+                <tbody id="{{- uiadd(picui, 'cpubody', 'item').id() }}">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{# os info #}
+{% set os = uiadd(picui, 'os', 'object') %}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Betriebssystem</div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            Distro
+            <span id="{{- uiadd(os, 'distro', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Kernel
+            <span id="{{- uiadd(os, 'kernel', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Uptime
+            <span id="{{- uiadd(os, 'uptime', 'item').id() -}}" class="badge">-</span>
+        </li>
+        <li class="list-group-item">
+            Idletime
+            <span id="{{- uiadd(os, 'idletime', 'item').id() -}}" class="badge">-</span>
+        </li>
+    </ul>
+</div>
+
+
+{# net info #}
+{% set net = uiadd(picui, 'net', 'object') %}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Netzwerk</div>
+    <div class="panel-body">
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                empfangen
+                <span id="{{- uiadd(net, 'rxbytes', 'item').id() -}}" class="badge">-</span>
+            </li>
+            <li class="list-group-item">
+                gesendet
+                <span id="{{- uiadd(net, 'txbytes', 'item').id() -}}" class="badge">-</span>
+        </li>
+    </ul>
+
+        {# write/read rate logs #}
+        {{- lg.render(uiadd(net, 'rxrate', 'object')) -}}
+        {{- lg.render(uiadd(net, 'txrate', 'object')) -}}
+
+    </div>
+</div>
+
+
+
+{# memory card info #}
+{% set disk = uiadd(picui, 'disk', 'object') %}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">
+        OS-Partition
+        <span id="{{- uiadd(disk, 'total', 'item').id() -}}" class="badge">-</span>
+    </div>
+    <div class="panel-body">
+
+        {{-
+            me.render_memory(
+                uiadd(disk, 'mem', 'array'),
+                ['belegt', 'frei']
+            )
+        -}}
+
+        {% set write = uiadd(disk, 'write', 'object') %}
+        {% set read = uiadd(disk, 'read', 'object') %}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="col-md-3">Zugriff</th>
+                    <th class="col-md-3">Größe</th>
+                    <th class="col-md-3">Anzahl</th>
+                    <th class="col-md-3">Zeit</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>schreiben</td>
+                        <td>
+                            <span id="{{- uiadd(write, 'bytes', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(write, 'count', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(write, 'time', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>lesen</td>
+                        <td>
+                            <span id="{{- uiadd(read, 'bytes', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(read, 'count', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                        <td>
+                            <span id="{{- uiadd(read, 'time', 'item').id() -}}" class="badge">-</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        {# write/read rate logs #}
+        {{- lg.render(uiadd(disk, 'writerate', 'object')) -}}
+        {{- lg.render(uiadd(disk, 'readrate', 'object')) -}}
+
+    </div>
+</div>
+
+
+{# sys mem + swap #}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">
+        Arbeitsspeicher
+        <span id="{{- uiadd(picui, 'vmemtotal', 'item').id() -}}" class="badge">-</span>
+    </div>
+    <div class="panel-body">
+
+        {{-
+            me.render_memory(
+                uiadd(picui, 'vmem', 'array'),
+                [
+                    'belegt',
+                    'verfügbar',
+                    'ungenutzt',
+                    'gepuffert',
+                    'gecached'
+                ]
+            )
+        -}}
+
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">
+        Swap
+        <span id="{{- uiadd(picui, 'swaptotal', 'item').id() -}}" class="badge">-</span>
+    </div>
+    <div class="panel-body">
+        {{-
+            me.render_memory(
+                uiadd(picui, 'swap', 'array'),
+                ['belegt', 'frei']
+            )
+        -}}
+    </div>
+</div>

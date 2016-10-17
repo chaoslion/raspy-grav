@@ -1,0 +1,451 @@
+{# INPUTS
+    picui
+    page.header
+#}
+
+{% macro render_report_currently(uiobj) %}
+
+<div class="panel panel-default">
+    <div id="{{- uiadd(uiobj, 'time', 'item').id() -}}" class="panel-heading panel-heading-big">-</div>
+    <div class="panel-body">
+
+        <div class="media weather-summary">
+            <div class="media-left">
+                <span id="{{- uiadd(uiobj, 'icon', 'item').id() }}"></span>
+            </div>
+            <div class="media-body">
+                <h4 id="{{- uiadd(uiobj, 'head', 'item').id() -}}" class="media-heading">-</h4>
+                <p id="{{- uiadd(uiobj, 'summary', 'item').id() }}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="list-group weather-report">
+
+        {# ***always shown #}
+
+        {# precipation #}
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-umbrella"></span> Niederschlag
+            </h5>
+
+            <div class="list-group-item-text">
+                <ul class="list-space5">
+                    <li>
+                        Kategorie
+                        <span id="{{- uiadd(uiobj, 'precipType', 'item').id() -}}" class="pull-right badge">-</span>
+                    </li>
+                    <li>
+                        Intensität
+                        <span id="{{- uiadd(uiobj, 'precipIntensity', 'item').id() -}}" class="pull-right badge">-</span>
+                    </li>
+
+                    <li>
+                        Wahrscheinlichkeit
+                        <span id="{{- uiadd(uiobj, 'precipProbability', 'item').id() -}}" class="pull-right badge">-</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-cloud wi-fw"></span> Wolken
+                <span id="{{- uiadd(uiobj, 'cloudCover', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+
+        {# wind #}
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-strong-wind"></span> Wind
+            </h5>
+
+            <div class="list-group-item-text">
+                <ul class="list-space10">
+                    <li>
+                        Geschwindigkeit
+                        <span class="pull-right" >
+                            <span id="{{- uiadd(uiobj, 'windSpeed', 'item').id() }}"></span>
+                        </span>
+                    </li>
+                    <li>
+                        Richtung
+                        <span class="pull-right" >
+                            <span id="{{- uiadd(uiobj, 'windBearing', 'item').id() }}"></span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-humidity wi-fw"></span> Luftfeuchtigkeit
+                <span id="{{- uiadd(uiobj, 'humidity', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-barometer wi-fw"></span> Luftdruck
+                <span id="{{- uiadd(uiobj, 'pressure', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-alien"></span> Ozon
+                <span id="{{- uiadd(uiobj, 'ozone', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-fog"></span> Sichtweite
+                <span id="{{- uiadd(uiobj, 'visibility', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-raindrops"></span> Taupunkt
+                <span id="{{- uiadd(uiobj, 'dewPoint', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+    </div>
+
+
+</div>
+{% endmacro %}
+
+
+
+
+{% macro render_report_daily(uiobj) %}
+
+<div class="panel panel-default">
+    <div id="{{- uiadd(uiobj, 'time', 'item').id() -}}" class="panel-heading panel-heading-big">-</div>
+    <div class="panel-body">
+
+        <div class="media weather-summary">
+            <div class="media-left">
+                <span id="{{- uiadd(uiobj, 'icon', 'item').id() }}"></span>
+            </div>
+            <div class="media-body">
+                <h4 id="{{- uiadd(uiobj, 'head', 'item').id() -}}" class="media-heading">-</h4>
+                <p id="{{- uiadd(uiobj, 'summary', 'item').id() }}"></p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="list-group weather-report">
+
+        {# ***always shown #}
+
+
+        {# precipation #}
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-umbrella"></span> Niederschlag
+            </h5>
+
+            <div class="list-group-item-text">
+                <ul class="list-space5">
+                    <li>
+                        Kategorie
+                        <span id="{{- uiadd(uiobj, 'precipType', 'item').id() -}}" class="pull-right badge">-</span>
+                    </li>
+                    <li>
+                        Intensität
+                        <span id="{{- uiadd(uiobj, 'precipIntensity', 'item').id() -}}" class="pull-right badge">-</span>
+                    </li>
+
+
+                    <li>
+                        max. Intensität
+                        <span id="{{- uiadd(uiobj, 'precipIntensityMax', 'item').id() -}}" class="pull-right badge">-</span>
+                    </li>
+
+                    <li>
+                        Wahrscheinlichkeit
+                        <span id="{{- uiadd(uiobj, 'precipProbability', 'item').id() -}}" class="pull-right badge">-</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-cloud wi-fw"></span> Wolken
+                <span id="{{- uiadd(uiobj, 'cloudCover', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+
+        {# wind #}
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-strong-wind"></span> Wind
+            </h5>
+
+            <div class="list-group-item-text">
+                <ul class="list-space10">
+                    <li>
+                        Geschwindigkeit
+                        <span class="pull-right" >
+                            <span id="{{- uiadd(uiobj, 'windSpeed', 'item').id() }}"></span>
+                        </span>
+                    </li>
+                    <li>
+                        Richtung
+                        <span class="pull-right" >
+                            <span id="{{- uiadd(uiobj, 'windBearing', 'item').id() }}"></span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-sunrise"></span> Sonnenaufgang
+                <span id="{{- uiadd(uiobj, 'sunriseTime', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+
+        <div class="list-group-item">
+            <h5 class="list-group-item-heading">
+                <span class="wi wi-fw wi-sunset"></span> Sonnenuntergang
+                <span id="{{- uiadd(uiobj, 'sunsetTime', 'item').id() -}}" class="pull-right badge">-</span>
+            </h5>
+        </div>
+
+        {# ***hidden by default #}
+        {% set more_id = uiadd(uiobj, 'more', 'item').id() %}
+        <div id="{{- more_id -}}" class="collapse">
+
+            {# apparent temp #}
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="wi wi-fw wi-thermometer"></span> gefühlte Temperatur
+                </h5>
+
+                <div class="list-group-item-text">
+                    <ul class="list-space5">
+                        <li>
+                            Maximum
+                            <span id="{{- uiadd(uiobj, 'apparentTemperatureMax', 'item').id() -}}" class="pull-right badge">-</span>
+                        </li>
+                        <li>
+                            Minimum
+                            <span id="{{- uiadd(uiobj, 'apparentTemperatureMin', 'item').id() -}}" class="pull-right badge">-</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="wi wi-humidity wi-fw"></span> Luftfeuchtigkeit
+                    <span id="{{- uiadd(uiobj, 'humidity', 'item').id() -}}" class="pull-right badge">-</span>
+                </h5>
+            </div>
+
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="wi wi-barometer wi-fw"></span> Luftdruck
+                    <span id="{{- uiadd(uiobj, 'pressure', 'item').id() -}}" class="pull-right badge">-</span>
+                </h5>
+            </div>
+
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="wi wi-fw wi-alien"></span> Ozon
+                    <span id="{{- uiadd(uiobj, 'ozone', 'item').id() -}}" class="pull-right badge">-</span>
+                </h5>
+            </div>
+
+
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="wi wi-fw wi-lunar-eclipse"></span> Mondphase
+                    <span class="pull-right">
+                         <span id="{{- uiadd(uiobj, 'moonPhase', 'item').id() }}"></span>
+                    </span>
+                </h5>
+            </div>
+
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="wi wi-fw wi-fog"></span> Sichtweite
+                    <span id="{{- uiadd(uiobj, 'visibility', 'item').id() -}}" class="pull-right badge">-</span>
+                </h5>
+            </div>
+
+            <div class="list-group-item">
+                <h5 class="list-group-item-heading">
+                    <span class="wi wi-fw wi-raindrops"></span> Taupunkt
+                    <span id="{{- uiadd(uiobj, 'dewPoint', 'item').id() -}}" class="pull-right badge">-</span>
+                </h5>
+            </div>
+
+        </div>
+        <a
+            id="{{- uiadd(uiobj, 'morebtn', 'item').id() -}}"
+            href="#{{- more_id -}}"
+            class="list-group-item list-group-item-info"
+            role="button"
+            data-toggle="collapse"
+            aria-expanded="false"
+            aria-controls="{{- more_id }}">-</a>
+
+    </div>
+
+
+</div>
+{% endmacro %}
+
+
+{% macro render_sidebar_tab(uiobj) %}
+
+    {%
+        import 'partials/raspy/samplelogger.html.twig' as lg
+    %}
+
+    {% set tabs = uiadd(uiobj, 'tabs', 'bstab') %}
+    {% for caption in ['Tagesverlauf', 'Webcam', 'Zeitraffer'] %}
+        {% do tabs.add_panel(caption) %}
+    {% endfor %}
+
+    {{- tabs.begin_html() -}}
+    {% for content in tabs.get_contents() %}
+        {{- content.begin_html(loop.first) -}}
+
+        {% if loop.index0 == 0 %}
+            {{- lg.render(uiadd(uiobj, 'temp', 'object')) -}}
+            {{- lg.render(uiadd(uiobj, 'preci', 'object')) -}}
+            {{- lg.render(uiadd(uiobj, 'clouds', 'object')) -}}
+        {% elseif loop.index0 == 1 %}
+            <div id="{{- uiadd(uiobj, 'cambody', 'item').id() }}"></div>
+
+            <blockquote>
+                Der Graph zeigt die relative Anzahl der im Bild enthaltenden Pixelintensitäten
+                aufgetragen von [0, 255].
+                Ein Klick auf den Button blendet den Vordergrund aus, so dass nur Himmel zu sehen ist.
+            </blockquote>
+        {% elseif loop.index0 == 2 %}
+            {# for 800x600: use 4x3 resolution #}
+            <div id="{{- uiadd(uiobj, 'videobody', 'item').id() -}}" class="embed-responsive embed-responsive-4by3"></div>
+        {% endif %}
+        {{- content.end_html() -}}
+    {% endfor %}
+    {{- tabs.end_html() -}}
+
+{% endmacro %}
+
+
+{#
+    current weather
+#}
+{% macro render_current(ui) %}
+{% import _self as me %}
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Aktuell</div>
+    <div class="panel-body">
+
+        <div id="{{- uiadd(ui, 'alerts', 'item').id() }}"></div>
+
+        <div class="row">
+            <div class="col-md-4">
+
+                {# report #}
+                {{- me.render_report_currently( uiadd(ui, 'report', 'object') ) -}}
+
+            </div>
+            <div class="col-md-8">
+
+                {# sidebar #}
+                {# {{- me.render_sidebar_accordion(uiadd(ui, 'sidebar', 'object')) -}} #}
+                {{- me.render_sidebar_tab(uiadd(ui, 'sidebar', 'object')) -}}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endmacro %}
+
+
+
+
+
+
+{% macro render_forecasts(ui) %}
+{% import _self as me %}
+
+{#
+    6 days forecast
+    2x3 grid
+#}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Vorhersage</div>
+    <div class="panel-body">
+
+        {% set forecasts = uiadd(ui, 'forecasts', 'array') %}
+        {% for row in range(0,1) %}
+            <div class="row">
+                {% for item in range(0,2) %}
+                    <div class="col-md-4">
+                        {{- me.render_report_daily( uipush(forecasts, 'object') ) -}}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+
+
+    </div>
+</div>
+{% endmacro %}
+
+
+
+{% import _self as me %}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Info</div>
+    <div class="panel-body">
+        <ul class="list-group">
+            <li class="list-group-item">
+                Updates
+                <span id="{{- uiadd(picui, 'updates', 'item').id() -}}" class="badge">-</span>
+            </li>
+            <li class="list-group-item">
+                Letztes Update
+                <span id="{{- uiadd(picui, 'synctime', 'item').id() -}}" class="badge">-</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+{{- me.render_current(uiadd(picui, 'currently', 'object')) -}}
+
+{{-
+    me.render_forecasts(
+        uiadd(picui, 'daily', 'object')
+    )
+-}}
+
+<a class="pull-right" href="https://darksky.net/poweredby/">Powered by Dark Sky</a>

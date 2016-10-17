@@ -1,0 +1,127 @@
+{# INPUTS
+    picui
+    page.header
+#}
+
+{% macro render_socket(parent) %}
+
+    {%
+        import 'partials/raspy/samplelogger.html.twig' as lg
+    %}
+
+    {%
+        import 'partials/raspy/energymeter.html.twig' as em
+    %}
+
+    {# <div class="panel panel-default">
+        <div class="panel-heading panel-heading-big">Steuerung</div>
+        <div class="panel-body"> #}
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Status
+                    <span id="{{- uiadd(parent, 'state', 'item').id() -}}" class="pull-right fa fa-lg fa-lightbulb-o"></span>
+                </li>
+                <li class="list-group-item">
+                    Modus
+                    <span id="{{- uiadd(parent, 'mode', 'item').id() -}}" class="badge">-</span>
+                </li>
+                <li class="list-group-item">
+                    Automat
+                    <span id="{{- uiadd(parent, 'automat', 'item').id() -}}" class="badge">-</span>
+                </li>
+                <li class="list-group-item">
+                    Beschreibung
+                    <span id="{{- uiadd(parent, 'automat_msg', 'item').id() -}}" class="badge">-</span>
+                </li>
+                <li class="list-group-item">
+                    Zeit ein
+                    <span id="{{- uiadd(parent, 'ton', 'item').id() -}}" class="badge">-</span>
+                </li>
+                <li class="list-group-item">
+                    Zeit aus
+                    <span id="{{- uiadd(parent, 'toff', 'item').id() -}}" class="badge">-</span>
+                </li>
+                <li class="list-group-item">
+                    Leistung (RMS)
+                    <span id="{{- uiadd(parent, 'prms', 'item').id() -}}" class="badge">-</span>
+                </li>
+            </ul>
+
+            {{- lg.render(uiadd(parent, 'log', 'object')) -}}
+
+            {{- em.render(uiadd(parent, 'energy', 'object')) -}}
+
+{% endmacro %}
+
+
+
+{% macro render_sockets(parent, sockets, authorized) %}
+    {% import _self as me %}
+
+    {% set socketstabs = uiadd(parent, 'socketstabs', 'bstab') %}
+
+    {% for socket in sockets %}
+        {% set caption = socket.location %}
+        {% if not authorized %}
+            {% set caption = 'Dose#' ~ loop.index0 %}
+        {% endif %}
+        {% do socketstabs.add_panel(caption) %}
+    {% endfor %}
+
+    {{- socketstabs.begin_html() -}}
+    {% for content in socketstabs.get_contents() %}
+        {{- content.begin_html(loop.first) -}}
+        {{- me.render_socket(content) -}}
+        {{- content.end_html() -}}
+    {% endfor %}
+    {{- socketstabs.end_html() -}}
+{% endmacro %}
+
+
+{% import _self as me %}
+{% set tx433 = uiadd(picui, 'tx433', 'object') %}
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">433 Mhz Sender</div>
+    <div class="panel-body">
+        <ul class="list-group">
+            <li class="list-group-item">
+                Anzahl Übertragungen
+                <span id="{{- uiadd(tx433, 'count', 'item').id() -}}" class="badge">-</span>
+            </li>
+            <li class="list-group-item">
+                letzte Übertragung
+                <span id="{{- uiadd(tx433, 'timestamp', 'item').id() -}}" class="badge">-</span>
+            </li>
+            <li class="list-group-item">
+                letztes Ziel
+                <span id="{{- uiadd(tx433, 'code', 'item').id() -}}" class="badge">-</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% set automats = uiadd(picui, 'automats', 'object') %}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Automaten</div>
+    <div class="panel-body">
+        <ul class="list-group">
+            <li class="list-group-item">
+                Anzahl
+                <span id="{{- uiadd(automats, 'count', 'item').id() -}}" class="badge">-</span>
+            </li>
+            <li class="list-group-item">
+                Aktiv
+                <span id="{{- uiadd(automats, 'active', 'item').id() -}}" class="badge">-</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Steckdosen</div>
+    <div class="panel-body">
+        {{- me.render_sockets(picui, picui.taskdata.sockets, picui.authorized) -}}
+    </div>
+</div>

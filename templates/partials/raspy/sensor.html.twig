@@ -1,0 +1,58 @@
+{# INPUTS
+    picui
+    page.header
+#}
+
+{%
+    import 'partials/raspy/samplelogger.html.twig' as lg
+%}
+
+{%
+    set sensor_types = [
+        ['temp', 'Temperatur'],
+        ['light', 'Licht'],
+        ['pressure', 'Luftdruck'],
+        ['humidity', 'Luftfeuchte'],
+    ]
+%}
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-big">Sensoren</div>
+    <div class="panel-body">
+
+        {% set sensortabs = uiadd(picui, 'sensortabs', 'bstab') %}
+        {% for type in sensor_types %}
+            {% do sensortabs.add_panel(type[1]) %}
+        {% endfor %}
+
+        {{- sensortabs.begin_html() -}}
+        {% for stcontent in sensortabs.get_contents() %}
+            {% set stype = sensor_types[loop.index0][0] %}
+            {{- stcontent.begin_html(loop.first) -}}
+
+                {% set locationtabs = uiadd(stcontent, 'locationtabs', 'bstab') %}
+                {% for location, names in picui.taskdata[stype] %}
+                    {% do locationtabs.add_panel(location) %}
+                {% endfor %}
+
+                {{- locationtabs.begin_html() -}}
+                {% for location, names in picui.taskdata[stype] %}
+                    {% set ltcontent = locationtabs.get_contents()[loop.index0] %}
+                    {% set items = uiadd(ltcontent, 'items', 'array')%}
+                    {{- ltcontent.begin_html(loop.first) -}}
+                    {% for name in names %}
+                        <div class="panel panel-default">
+                        <div class="panel-heading">Name: {{- name -}}</div>
+                        <div class="panel-body">
+                            {{- lg.render(uipush(items, 'object')) -}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {{- ltcontent.end_html() -}}
+                {% endfor %}
+                {{- locationtabs.end_html() -}}
+            {{- stcontent.end_html() -}}
+        {% endfor %}
+        {{- sensortabs.end_html() -}}
+    </div>
+</div>

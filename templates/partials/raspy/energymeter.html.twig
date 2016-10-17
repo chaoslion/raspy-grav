@@ -1,0 +1,79 @@
+{% macro render(container) %}
+
+    {%
+        import 'partials/raspy/samplelogger.html.twig' as lg
+    %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading panel-heading-big">Energie&nbsp;<span id="{{- uiadd(container, 'euro', 'item').id() -}}" class="fa fa-eur fa-fw" aria-hidden="true"></span></div>
+        <div class="panel-body">
+
+            {# table #}
+            {% set table = uiadd(container, 'table', 'object') %}
+            {% set stats = uiadd(table, 'stats', 'array') %}
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-md-4 col-sm-6">Zeitraum</th>
+                            <th class="col-md-4 col-sm-2">Fortschritt</th>
+                            <th class="col-md-2 col-sm-2">aktuell</th>
+                            <th class="col-md-2 col-sm-2">voraussichtlich</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for item in ['Stunde', 'Tag', 'Woche', 'Monat'] %}
+                            {% set stat = uipush(stats, 'object') %}
+                            <tr>
+                                <td>{{- item -}}</td>
+                                <td>
+                                    <div class="progress">
+                                        <div
+                                            id="{{- uiadd(stat, 'progress', 'item').id() -}}"
+                                            class="progress-bar progress-bar-warning"
+                                            role="progressbar"
+                                            aria-valuenow="0"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                            style="width: 0%">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span id="{{- uiadd(stat, 'now', 'item').id() -}}" class="badge">-</span></td>
+                                <td><span id="{{- uiadd(stat, 'app', 'item').id() -}}" class="badge">-</span></td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>Gesamt</td>
+                            <td><span id="{{- uiadd(table, 'start', 'item').id() -}}" class="badge">-</span></td>
+                            <td colspan="2">
+                                <span id="{{- uiadd(table, 'total', 'item').id() -}}" class="badge">-</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            {# plots are arranged in tabs #}
+            <div id="{{- uiadd(container, 'logtabsdiv', 'item').id() }}">
+                {% set logtabs = uiadd(container, 'logtabs', 'bstab') %}
+                {% for caption in ['Tag', 'Woche', 'Monat'] %}
+                    {% do logtabs.add_panel(caption) %}
+                {% endfor %}
+
+                {{- logtabs.begin_html() -}}
+                {% for content in logtabs.get_contents() %}
+                    {{- content.begin_html(loop.first) -}}
+                    {{- lg.render(content) -}}
+                    {{- content.end_html() -}}
+                {% endfor %}
+                {{- logtabs.end_html() -}}
+            </div>
+
+        </div>
+    </div>
+
+{% endmacro %}
