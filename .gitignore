@@ -1,0 +1,15 @@
+assets/*
+classes/*
+css/*
+css-vendor/*
+images/*
+js/min/*
+js-vendor/*
+languages/*
+vendor/*
+*.php
+*.yaml
+*.json
+*.py
+*.phar
+*.lock

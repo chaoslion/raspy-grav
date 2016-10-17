@@ -1,0 +1,4 @@
+*html.twig
+partials/*.html.twig
+!picontrol.html.twig
+!partials/picontrol/*.html.twig
