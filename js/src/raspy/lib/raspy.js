@@ -135,8 +135,8 @@ var raspy = (function(period, decimals) {
         }
 
 
-        $.post({
-            url: '/api/raspy/getrep.php',
+        $.get({
+            url: '/api/raspy/getrep',
             dataType: 'json',
             data: postdata,
             success: function(result) {
