@@ -97,8 +97,8 @@ var raspy = (function(period, decimals) {
             return this.nice_number(number, 1000, decimals, unit);
         },
         mem2human: function(byte) {
-            return this.nice_number(byte, 1024, decimals, 'Byte');
-            /*return _number_compress(byte, 1024, [ 'TB', 'GB', 'MB', 'kB', 'Byte']);*/
+            return this.nice_number(byte, 1024, decimals, 'B');
+            /*return _number_compress(byte, 1024, [ 'TB', 'GB', 'MB', 'kB', 'B']);*/
         },
         bits2human: function(bits) {
             return this.nice_number(bits, 1000, decimals, 'Bit/s');
