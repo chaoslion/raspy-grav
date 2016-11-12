@@ -145,8 +145,8 @@ raspy.register_task('weather', function() {
 
 
         raspy.ui.camsky = false;
-        raspy.ui.sourceraw = '/api/raspy/webcam.php';
-        raspy.ui.sourcesky = '/api/raspy/webcam.php?sky';
+        raspy.ui.sourceraw = '/api/raspy/webcam';
+        raspy.ui.sourcesky = '/api/raspy/webcam?sky';
         raspy.ui.btnsky_raw = 'markiere Himmel';
         raspy.ui.btnsky_sky = 'demarkiere Himmel';
 
@@ -193,7 +193,7 @@ raspy.register_task('weather', function() {
             .attr('width', report.cam.width)
             .attr('height', report.cam.height)
             .html(
-                '<source src="/api/raspy/webcamlapse.php" type="video/mp4">'
+                '<source src="/api/raspy/webcamlapse" type="video/mp4">'
             );
 
         videojs(

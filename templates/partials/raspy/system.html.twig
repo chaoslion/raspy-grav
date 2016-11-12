@@ -145,8 +145,24 @@
 
 {# cpu info #}
 <div class="panel panel-default">
-    <div class="panel-heading panel-heading-big">CPUs</div>
+    <div class="panel-heading panel-heading-big">Raspberry Pi</div>
     <div class="panel-body">
+
+         <ul class="list-group">
+            <li class="list-group-item">
+                Board
+                <span id="{{- uiadd(picui, 'piboard', 'item').id() -}}" class="badge">-</span>
+            </li>
+            <li class="list-group-item">
+                Revision
+                <span id="{{- uiadd(picui, 'pirev', 'item').id() -}}" class="badge">-</span>
+            </li>
+            <li class="list-group-item">
+                Hardware
+                <span id="{{- uiadd(picui, 'pihw', 'item').id() -}}" class="badge">-</span>
+            </li>
+        </ul>
+
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -157,7 +173,7 @@
                     <th class="col-sm-6">Model</th>
                 </tr>
                 </thead>
-                <tbody id="{{- uiadd(picui, 'cpubody', 'item').id() }}">
+                <tbody id="{{- uiadd(picui, 'picpubody', 'item').id() }}">
                 </tbody>
             </table>
         </div>

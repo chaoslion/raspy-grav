@@ -61,9 +61,13 @@ raspy.register_task('system', function() {
         );
     };
 
-    var build_cpus = function(report) {
-        var tr = $('<tr>').appendTo(raspy.ui.cpubody);
-        // raspy.ui.cpubody
+    var build_raspi = function(report) { 
+        // static data
+        raspy.ui.piboard.text(report.system.board);
+        raspy.ui.pirev.text(report.system.revision);
+        raspy.ui.pihw.text(report.system.hardware);
+
+        var tr = $('<tr>').appendTo(raspy.ui.picpubody);
         raspy.ui.cpu_usages = $.map(report.system.cpus, function(cpu, index) {
             // only return usage, rest is static
             var usage = $('<span>').attr('class', 'badge');
@@ -147,7 +151,7 @@ raspy.register_task('system', function() {
             raspy.ui.net.rxrate,
             {
                 label: 'Empfangsrate',
-                unit: 'bit/s',
+                unit: 'Bit/s',
                 mode: raspy.tools.samplelogger.MODE_PLOT,
                 plot: {
                     show_stats: false
@@ -166,7 +170,7 @@ raspy.register_task('system', function() {
             raspy.ui.net.txrate,
             {
                 label: 'Senderate',
-                unit: 'bit/s',
+                unit: 'Bit/s',
                 mode: raspy.tools.samplelogger.MODE_PLOT,
                 plot: {
                     show_stats: false
@@ -422,7 +426,7 @@ raspy.register_task('system', function() {
     return {
         build: function(info, report) {
             build_processor(report);
-            build_cpus(report);
+            build_raspi(report);
             build_net(report);
             build_disk(report);
         },

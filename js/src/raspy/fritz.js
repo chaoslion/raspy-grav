@@ -90,7 +90,7 @@ raspy.register_task('fritz', function() {
                 {
                     mode: raspy.tools.samplelogger.MODE_ALL,
                     label: 'Download',
-                    unit: 'bit/s',
+                    unit: 'Bit/s',
                     min: 0,
                     plot: {
                         show_stats: false
@@ -104,7 +104,7 @@ raspy.register_task('fritz', function() {
                 {
                     mode: raspy.tools.samplelogger.MODE_ALL,
                     label: 'Upload',
-                    unit: 'bit/s',
+                    unit: 'Bit/s',
                     min: 0,
                     plot: {
                         show_stats: false
