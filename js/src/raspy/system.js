@@ -63,7 +63,7 @@ raspy.register_task('system', function() {
 
     var build_raspi = function(report) { 
         // static data
-        raspy.ui.piboard.text(report.system.board);
+        raspy.ui.pioc.text(report.system.overclocked?'Ja':'Nein');
         raspy.ui.pirev.text(report.system.revision);
         raspy.ui.pihw.text(report.system.hardware);
 
