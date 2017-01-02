@@ -31,7 +31,7 @@ raspy.register_task('rcsocket', function() {
                 .css('color', socketdata.state?raspy.colors.green:raspy.colors.red)
                 .prop('title', socketdata.state?'ein':'aus');
 
-            socketui.mode.text(socketdata.auto?'Automat':'Manuell');
+            socketui.mode.text(socketdata.mode?'Automat':'Manuell');
 
 
             socketui.ton.text(minute_on);
